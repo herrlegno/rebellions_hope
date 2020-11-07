@@ -13,5 +13,5 @@ UCLASS()
 class REBELLIONSHOPE_API ARebellionsHopeGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+	ARebellionsHopeGameModeBase();
 };
