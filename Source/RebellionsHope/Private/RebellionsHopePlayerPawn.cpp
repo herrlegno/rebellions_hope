@@ -1,6 +1,7 @@
 // Herrlegno
 
 #include "RebellionsHopePlayerPawn.h"
+#include "FireComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -10,8 +11,11 @@ ARebellionsHopePlayerPawn::ARebellionsHopePlayerPawn() {
 	PrimaryActorTick.bCanEverTick = false;
 	// Component creation
 	ForwardArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Forward"));
+	FireComponent = CreateDefaultSubobject<UFireComponent>(TEXT("FireComponent"));
+
 	SetMesh();
 	SetGizmos();
+	SetComponents();
 }
 
 // Called when the game starts or when spawned
@@ -32,7 +36,7 @@ void ARebellionsHopePlayerPawn::SetupPlayerInputComponent(UInputComponent* Playe
 }
 
 void ARebellionsHopePlayerPawn::SetMesh() const {
-	UStaticMesh* DefaultMesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(defaultStaticMeshPath).Object;
+	UStaticMesh* DefaultMesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(DefaultStaticMeshPath).Object;
 	UStaticMeshComponent* Mesh = GetMeshComponent();
 	USphereComponent* Collision = GetCollisionComponent();
 	Mesh->SetStaticMesh(DefaultMesh);
@@ -47,6 +51,10 @@ void ARebellionsHopePlayerPawn::SetGizmos() const {
 	                                FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
 }
 
+void ARebellionsHopePlayerPawn::SetComponents() {
+	AddOwnedComponent(FireComponent);
+}
+
 void ARebellionsHopePlayerPawn::OnMoveRight(const float Value) {
 	if (Value != 0.f) {
 		Right = Value >= 0.f;
@@ -57,7 +65,11 @@ void ARebellionsHopePlayerPawn::OnMoveRight(const float Value) {
 }
 
 void ARebellionsHopePlayerPawn::OnFire() {
-	UE_LOG(LogTemp, Warning, TEXT("Fire"));
+	if(!FireComponent) {
+		UE_LOG(LogTemp, Error, TEXT("%s: FireComponent not found!"), *GetFName().ToString());
+		return;
+	}
+	FireComponent->Fire();
 }
 
 void ARebellionsHopePlayerPawn::OnDash() {

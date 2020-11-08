@@ -28,7 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	static constexpr const TCHAR* defaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
+	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
 	
 	UPROPERTY(EditAnywhere, Category = "Player", meta = (ClampMin = "0"))
 	float Speed = 100.f;
@@ -41,8 +41,12 @@ private:
 	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	class UFireComponent* FireComponent = nullptr;
+
 	void SetMesh() const;
 	void SetGizmos() const;
+	void SetComponents();
 	virtual void OnMoveRight(float Value) override;
 	void OnFire();
 	void OnDash();
