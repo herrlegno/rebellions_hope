@@ -39,6 +39,7 @@ void UFireComponent::SetupBulletTemplate() {
 	BulletTemplate = NewObject<ABullet>();
 }
 
+// TODO: FIX SPAWN COLLISION WHEN SPAWNING IN MOVEMENT
 void UFireComponent::SpawnBullet() const {
 	if (BulletTemplate) {
 		const AActor* Owner = GetOwner();
