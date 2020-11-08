@@ -7,11 +7,10 @@
 #include "Bullet.generated.h"
 
 UCLASS()
-class REBELLIONSHOPE_API ABullet : public AActor
-{
+class REBELLIONSHOPE_API ABullet : public AActor {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ABullet();
 
@@ -20,13 +19,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Properties", meta=(ClampMin = "0"))
 	float Velocity = 1000.f;
-	
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -34,7 +32,7 @@ public:
 
 	UPROPERTY()
 	class USceneComponent* Root = nullptr;
-	
+
 	void CreateHierarchy();
 	void SetMesh() const;
 };

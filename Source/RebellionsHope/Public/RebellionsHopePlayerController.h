@@ -10,12 +10,11 @@
  * 
  */
 UCLASS()
-class REBELLIONSHOPE_API ARebellionsHopePlayerController : public APlayerController
-{
+class REBELLIONSHOPE_API ARebellionsHopePlayerController : public APlayerController {
 	GENERATED_BODY()
 
 	virtual void BeginPlay() override;
 
-	private:
+private:
 	FName MainCameraTag = "MainCamera";
 };

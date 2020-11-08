@@ -12,7 +12,6 @@ ARebellionsHopePlayerPawn::ARebellionsHopePlayerPawn() {
 	// Component creation
 	ForwardArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Forward"));
 	FireComponent = CreateDefaultSubobject<UFireComponent>(TEXT("FireComponent"));
-
 	SetMesh();
 	SetGizmos();
 	SetComponents();
@@ -65,7 +64,7 @@ void ARebellionsHopePlayerPawn::OnMoveRight(const float Value) {
 }
 
 void ARebellionsHopePlayerPawn::OnFire() {
-	if(!FireComponent) {
+	if (!FireComponent) {
 		UE_LOG(LogTemp, Error, TEXT("%s: FireComponent not found!"), *GetFName().ToString());
 		return;
 	}

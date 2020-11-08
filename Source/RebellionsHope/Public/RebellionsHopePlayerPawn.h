@@ -12,7 +12,7 @@ class REBELLIONSHOPE_API ARebellionsHopePlayerPawn : public ADefaultPawn {
 	GENERATED_BODY()
 
 public:
-	
+
 	// Sets default values for this pawn's properties
 	ARebellionsHopePlayerPawn();
 
@@ -29,7 +29,7 @@ public:
 
 private:
 	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
-	
+
 	UPROPERTY(EditAnywhere, Category = "Player", meta = (ClampMin = "0"))
 	float Speed = 100.f;
 	UPROPERTY(EditAnywhere, Category="Player", meta = (ClampMin="0"))
