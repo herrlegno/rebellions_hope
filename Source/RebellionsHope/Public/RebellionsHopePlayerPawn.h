@@ -47,7 +47,7 @@ private:
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
-	virtual void OnMoveRight(float Value) override;
+	void OnMoveRight(float Value);
 	void OnFire();
 	void OnDash();
 };

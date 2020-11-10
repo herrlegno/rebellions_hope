@@ -16,7 +16,7 @@
 	"Plugins": [
 		{
 			"Name": "AutoSettings",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/7f6a777da2724d4a9a3dd551f03a3ad1"
 		},
 		{
@@ -36,12 +36,12 @@
 		},
 		{
 			"Name": "CustomConfig",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/ae00c3b4e47140d79d88c98e02765efb"
 		},
 		{
 			"Name": "ConsoleEnhanced",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/86123c85a4474d609c5cef8a7fc5786b"
 		},
 		{
@@ -81,7 +81,7 @@
 		},
 		{
 			"Name": "SaveExtension",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/91084f43b68047ac8da6fc88a7467936"
 		},
 		{
