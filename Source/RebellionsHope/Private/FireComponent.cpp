@@ -39,17 +39,15 @@ void UFireComponent::SetupBulletTemplate() {
 	BulletTemplate = NewObject<ABullet>();
 }
 
-// TODO: FIX SPAWN COLLISION WHEN SPAWNING IN MOVEMENT
 void UFireComponent::SpawnBullet() const {
 	if (BulletTemplate) {
 		const AActor* Owner = GetOwner();
 		const FVector SpawnLocation = Owner->GetActorLocation();
 		const FRotator SpawnRotation = Owner->GetActorRotation();
-		const FVector ForwardVector = Owner->GetActorForwardVector();
-		BulletTemplate->SetActorRotation(ForwardVector.Rotation());
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParameters.Template = BulletTemplate;
+		BulletTemplate->SetActorEnableCollision(false);
 		GetWorld()->SpawnActor<ABullet>(SpawnLocation, SpawnRotation, SpawnParameters);
 	}
 }

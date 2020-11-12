@@ -47,9 +47,15 @@ private:
 	class USceneComponent* Root = nullptr;
 
 	UPROPERTY()
+	class UStaticMeshComponent* DebugMesh = nullptr;
+	
+	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
 
-	void SetGizmos();
+	static constexpr const TCHAR* DebugStaticMeshPath = TEXT("StaticMesh'/Engine/VREditor/FloatingText/JointSphere.JointSphere'");
+	
+	void SetGizmos() const;
+	void SetDebugMesh() const;
 	void SetupEnemyTemplate();
 	void SpawnSquad();
 	

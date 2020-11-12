@@ -9,9 +9,11 @@ ASquadSpawner::ASquadSpawner() {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	DebugMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DebugMesh"));
 	ForwardArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("ForwardArrow"));
 	RootComponent = Root;
 	SetGizmos();
+	SetDebugMesh();
 }
 
 // Called when the game starts or when spawned
@@ -26,10 +28,19 @@ void ASquadSpawner::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 }
 
-void ASquadSpawner::SetGizmos() {
+void ASquadSpawner::SetGizmos() const {
 	ForwardArrow->SetHiddenInGame(true);
 	ForwardArrow->AttachToComponent(RootComponent,
 	                                FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+}
+
+void ASquadSpawner::SetDebugMesh() const {
+	UStaticMesh* SelectedMesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(DebugStaticMeshPath).Object;
+	DebugMesh->SetStaticMesh(SelectedMesh);
+	DebugMesh->SetRelativeScale3D(FVector(30.f, 30.f, 30.f));
+	DebugMesh->AttachToComponent(Root,
+	                             FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+	DebugMesh->SetHiddenInGame(true);
 }
 
 void ASquadSpawner::SetupEnemyTemplate() {
@@ -41,18 +52,22 @@ void ASquadSpawner::SetupEnemyTemplate() {
 	EnemyTemplate = NewObject<ARebellionsHopeEnemy>();
 }
 
-// TODO: FIX LOCATION SHOULD = ROOT PLANE
 void ASquadSpawner::SpawnSquad() {
-	const FVector OriginLocation = RootComponent->GetComponentLocation();
+	const FTransform OriginTransform = GetActorTransform();
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Template = EnemyTemplate;
-	for (int i = 0; i < RowSize; i++) {
-		for (int j = 0; j < ColumnSize; j++) {
-			FVector SpawnLocation = OriginLocation + FVector(i * Separation, j * Separation, 0.f);
+	const int HalfRow = FMath::RoundToInt(RowSize / 2);
+	const int HalfColumn = FMath::RoundToInt(ColumnSize / 2);
+	const bool EvenRow = RowSize % 2 == 0;
+	const bool EvenColumn = ColumnSize % 2 == 0;
+	for (int i = -HalfRow; i < RowSize - HalfRow; i++) {
+		for (int j = -HalfColumn; j < ColumnSize - HalfColumn; j++) {
+			const FTransform LocalTransform(FVector(i * Separation + (EvenRow ? Separation / 2 : 0),
+			                                        j * Separation + (EvenColumn ? Separation / 2 : 0), 0.f));
+			const FTransform SpawnTransform = LocalTransform * OriginTransform;
 			ARebellionsHopeEnemy* SpawnedEnemy = GetWorld()->SpawnActor<ARebellionsHopeEnemy>(
-				SpawnLocation, FRotator(0.f, 0.f, 0.f), SpawnParameters);
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *SpawnedEnemy->GetActorRotation().ToString());
+				SpawnTransform.GetLocation(), SpawnTransform.Rotator(), SpawnParameters);
 			SquadMembers.Emplace(SpawnedEnemy);
 		}
 	}
