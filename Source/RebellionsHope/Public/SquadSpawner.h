@@ -58,5 +58,4 @@ private:
 	void SetDebugMesh() const;
 	void SetupEnemyTemplate();
 	void SpawnSquad();
-	
 };

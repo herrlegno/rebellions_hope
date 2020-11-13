@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SquadSpawner.h"
 #include "GameFramework/Actor.h"
 #include "RebellionsHopeEnemy.generated.h"
 
@@ -13,6 +14,9 @@ class REBELLIONSHOPE_API ARebellionsHopeEnemy : public AActor {
 public:
 	// Sets default values for this actor's properties
 	ARebellionsHopeEnemy();
+
+	UPROPERTY()
+	ASquadSpawner* Spawner = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,6 +43,12 @@ private:
 
 	UPROPERTY()
 	class UFireComponent* FireComponent = nullptr;
+
+	UPROPERTY()
+	class UInvaderMovementComponent* MovementComponent = nullptr;
+
+	UFUNCTION()
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 	void CreateHierarchy();
 	void SetMesh() const;

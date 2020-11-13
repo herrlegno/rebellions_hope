@@ -3,8 +3,10 @@
 #include "RebellionsHopeEnemy.h"
 
 #include "FireComponent.h"
+#include "InvaderMovementComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 ARebellionsHopeEnemy::ARebellionsHopeEnemy() {
@@ -15,6 +17,7 @@ ARebellionsHopeEnemy::ARebellionsHopeEnemy() {
 	HitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
 	ForwardArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Forward"));
 	FireComponent = CreateDefaultSubobject<UFireComponent>(TEXT("FireComponent"));
+	MovementComponent = CreateDefaultSubobject<UInvaderMovementComponent>(TEXT("MovementComponent"));
 	CreateHierarchy();
 	SetMesh();
 	SetGizmos();
@@ -55,4 +58,18 @@ void ARebellionsHopeEnemy::SetGizmos() const {
 
 void ARebellionsHopeEnemy::SetComponents() {
 	AddOwnedComponent(FireComponent);
+	AddOwnedComponent(MovementComponent);
+}
+
+void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
+	if (OtherActor->ActorHasTag(FName("SideLimit"))) {
+		if (MovementComponent->Movement == InvaderMovementType::Left) {
+			MovementComponent->Movement = InvaderMovementType::Right;
+			return;
+		}
+		if(MovementComponent->Movement == InvaderMovementType::Right) {
+			MovementComponent->Movement = InvaderMovementType::Left;
+			return;
+		}
+	}
 }

@@ -50,6 +50,7 @@ void ASquadSpawner::SetupEnemyTemplate() {
 		return;
 	}
 	EnemyTemplate = NewObject<ARebellionsHopeEnemy>();
+	EnemyTemplate->Spawner = this;
 }
 
 void ASquadSpawner::SpawnSquad() {
@@ -57,6 +58,7 @@ void ASquadSpawner::SpawnSquad() {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Template = EnemyTemplate;
+	
 	const int HalfRow = FMath::RoundToInt(RowSize / 2);
 	const int HalfColumn = FMath::RoundToInt(ColumnSize / 2);
 	const bool EvenRow = RowSize % 2 == 0;
