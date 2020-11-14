@@ -7,7 +7,7 @@
 #include "InvaderMovementComponent.generated.h"
 
 UENUM(BlueprintType)
-enum class InvaderMovementType: uint8 {
+enum class EInvaderMovementType: uint8 {
 	// Stop UMETA(DisplayName = "Stopped"),
 	Right UMETA(DisplayName = "Right"),
 	Left UMETA(DisplayName = "Left"),
@@ -24,7 +24,7 @@ public:
 	UInvaderMovementComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	InvaderMovementType Movement = InvaderMovementType::Right;
+	EInvaderMovementType Movement = EInvaderMovementType::Right;
 
 protected:
 	// Called when the game starts
@@ -43,7 +43,7 @@ private:
 
 	float StepProgress = 0.f;
 	
-	InvaderMovementType LastCollision;
+	EInvaderMovementType LastCollision;
 
 	void MoveRight(const float DeltaVelocity) const;
 	void MoveForward(const float DeltaVelocity) const;

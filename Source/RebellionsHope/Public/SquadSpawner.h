@@ -25,6 +25,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	TSubclassOf<class ARebellionsHopeEnemy> EnemyClass;
 
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeInvaderMovement(const enum EInvaderMovementType NewMovement);
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

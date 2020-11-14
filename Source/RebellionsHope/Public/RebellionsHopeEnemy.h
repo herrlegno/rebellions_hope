@@ -16,6 +16,9 @@ public:
 	ARebellionsHopeEnemy();
 
 	UPROPERTY()
+	class UInvaderMovementComponent* MovementComponent = nullptr;
+
+	UPROPERTY()
 	ASquadSpawner* Spawner = nullptr;
 
 protected:
@@ -43,9 +46,6 @@ private:
 
 	UPROPERTY()
 	class UFireComponent* FireComponent = nullptr;
-
-	UPROPERTY()
-	class UInvaderMovementComponent* MovementComponent = nullptr;
 
 	UFUNCTION()
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;

@@ -1,7 +1,6 @@
 // Herrlegno
 
 #include "RebellionsHopeEnemy.h"
-
 #include "FireComponent.h"
 #include "InvaderMovementComponent.h"
 #include "Components/ArrowComponent.h"
@@ -63,12 +62,12 @@ void ARebellionsHopeEnemy::SetComponents() {
 
 void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 	if (OtherActor->ActorHasTag(FName("SideLimit"))) {
-		if (MovementComponent->Movement == InvaderMovementType::Left) {
-			MovementComponent->Movement = InvaderMovementType::Right;
+		if (MovementComponent->Movement == EInvaderMovementType::Left) {
+			Spawner->ChangeInvaderMovement(EInvaderMovementType::Right);
 			return;
 		}
-		if(MovementComponent->Movement == InvaderMovementType::Right) {
-			MovementComponent->Movement = InvaderMovementType::Left;
+		if (MovementComponent->Movement == EInvaderMovementType::Right) {
+			Spawner->ChangeInvaderMovement(EInvaderMovementType::Left);
 			return;
 		}
 	}

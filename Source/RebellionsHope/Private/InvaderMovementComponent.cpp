@@ -24,15 +24,15 @@ void UInvaderMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 	if (!Owner)
 		return;
 	switch (Movement) {
-	case InvaderMovementType::Right: {
+	case EInvaderMovementType::Right: {
 		MoveRight(Velocity * DeltaTime);
 		break;
 	}
-	case InvaderMovementType::Left: {
+	case EInvaderMovementType::Left: {
 		MoveRight(-Velocity * DeltaTime);
 		break;
 	}
-	case InvaderMovementType::Forward: {
+	case EInvaderMovementType::Forward: {
 		MoveForward(Velocity * DeltaTime);
 		break;
 	}

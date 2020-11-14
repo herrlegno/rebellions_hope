@@ -2,6 +2,7 @@
 
 #include "SquadSpawner.h"
 #include "RebellionsHopeEnemy.h"
+#include "InvaderMovementComponent.h"
 #include "Components/ArrowComponent.h"
 
 // Sets default values
@@ -14,6 +15,12 @@ ASquadSpawner::ASquadSpawner() {
 	RootComponent = Root;
 	SetGizmos();
 	SetDebugMesh();
+}
+
+void ASquadSpawner::ChangeInvaderMovement(const EInvaderMovementType NewMovement) {
+	for(auto Invader: SquadMembers) {
+		Invader->MovementComponent->Movement = NewMovement;
+	}
 }
 
 // Called when the game starts or when spawned
