@@ -17,9 +17,9 @@ ASquadSpawner::ASquadSpawner() {
 	SetDebugMesh();
 }
 
-void ASquadSpawner::ChangeInvaderMovement(const EInvaderMovementType NewMovement) {
+void ASquadSpawner::NotifyCollision() {
 	for(auto Invader: SquadMembers) {
-		Invader->MovementComponent->Movement = NewMovement;
+		Invader->MovementComponent->ChangeMovement(EInvaderMovementType::Forward);
 	}
 }
 

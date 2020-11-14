@@ -13,7 +13,7 @@ class REBELLIONSHOPE_API ASquadSpawner : public AActor {
 public:
 	// Sets default values for this actor's properties
 	ASquadSpawner();
-	
+
 	UPROPERTY(EditAnywhere)
 	int32 RowSize = 5;
 
@@ -27,7 +27,7 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
-	void ChangeInvaderMovement(const enum EInvaderMovementType NewMovement);
+	void NotifyCollision();
 	
 protected:
 	// Called when the game starts or when spawned

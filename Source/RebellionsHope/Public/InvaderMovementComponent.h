@@ -8,7 +8,6 @@
 
 UENUM(BlueprintType)
 enum class EInvaderMovementType: uint8 {
-	// Stop UMETA(DisplayName = "Stopped"),
 	Right UMETA(DisplayName = "Right"),
 	Left UMETA(DisplayName = "Left"),
 	Forward UMETA(DisplayName = "Forward"),
@@ -23,8 +22,7 @@ public:
 	// Sets default values for this component's properties
 	UInvaderMovementComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EInvaderMovementType Movement = EInvaderMovementType::Right;
+	void ChangeMovement(EInvaderMovementType NewMovement);
 
 protected:
 	// Called when the game starts
@@ -36,15 +34,16 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-	float Velocity = 100.f;
+	float Velocity = 200.f;
 
 	UPROPERTY(EditAnywhere)
 	float StepDistance = 100.f;
 
-	float StepProgress = 0.f;
-	
+	UPROPERTY(EditDefaultsOnly)
+	EInvaderMovementType Movement = EInvaderMovementType::Right;
 	EInvaderMovementType LastCollision;
 
+	FVector ForwardMovementStartLocation;
 	void MoveRight(const float DeltaVelocity) const;
 	void MoveForward(const float DeltaVelocity) const;
 };

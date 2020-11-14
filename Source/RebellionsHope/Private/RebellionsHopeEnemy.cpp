@@ -31,7 +31,6 @@ void ARebellionsHopeEnemy::BeginPlay() {
 // Called every frame
 void ARebellionsHopeEnemy::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-	FireComponent->Fire();
 }
 
 void ARebellionsHopeEnemy::CreateHierarchy() {
@@ -62,13 +61,6 @@ void ARebellionsHopeEnemy::SetComponents() {
 
 void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 	if (OtherActor->ActorHasTag(FName("SideLimit"))) {
-		if (MovementComponent->Movement == EInvaderMovementType::Left) {
-			Spawner->ChangeInvaderMovement(EInvaderMovementType::Right);
-			return;
-		}
-		if (MovementComponent->Movement == EInvaderMovementType::Right) {
-			Spawner->ChangeInvaderMovement(EInvaderMovementType::Left);
-			return;
-		}
+		Spawner->NotifyCollision();
 	}
 }
