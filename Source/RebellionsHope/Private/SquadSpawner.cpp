@@ -54,6 +54,7 @@ void ASquadSpawner::SetupEnemyTemplate() {
 	if (EnemyClass->IsChildOf<ARebellionsHopeEnemy>()) {
 		EnemyTemplate = NewObject<ARebellionsHopeEnemy>(this, EnemyClass->GetFName(), RF_NoFlags,
 		                                                EnemyClass.GetDefaultObject());
+		EnemyTemplate->Spawner = this;
 		return;
 	}
 	EnemyTemplate = NewObject<ARebellionsHopeEnemy>();

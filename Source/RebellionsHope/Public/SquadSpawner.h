@@ -11,9 +11,6 @@ class REBELLIONSHOPE_API ASquadSpawner : public AActor {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
-	ASquadSpawner();
-
 	UPROPERTY(EditAnywhere)
 	int32 RowSize = 5;
 
@@ -25,6 +22,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	TSubclassOf<class ARebellionsHopeEnemy> EnemyClass;
 
+	// Sets default values for this actor's properties
+	ASquadSpawner();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	void NotifyCollision();
@@ -33,11 +35,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 private:
+	static constexpr const TCHAR* DebugStaticMeshPath = TEXT("StaticMesh'/Engine/VREditor/FloatingText/JointSphere.JointSphere'");
+
 	UPROPERTY(EditAnywhere)
 	float Separation  = 200.f;
 
@@ -56,8 +56,6 @@ private:
 	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
 
-	static constexpr const TCHAR* DebugStaticMeshPath = TEXT("StaticMesh'/Engine/VREditor/FloatingText/JointSphere.JointSphere'");
-	
 	void SetGizmos() const;
 	void SetDebugMesh() const;
 	void SetupEnemyTemplate();

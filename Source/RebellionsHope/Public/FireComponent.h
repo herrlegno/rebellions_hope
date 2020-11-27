@@ -11,29 +11,30 @@ class REBELLIONSHOPE_API UFireComponent : public UActorComponent {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this component's properties
-	UFireComponent();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class ABullet> BulletClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0"))
 	float FireRate = 100.f;
 
-	void Fire();
+	// Sets default values for this component's properties
+	UFireComponent();
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	void Fire();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
+	float TimeFromLastShot = 0.f;
+
 	UPROPERTY()
 	class ABullet* BulletTemplate;
-
-	float TimeFromLastShot = 0.f;
 
 	void SetupBulletTemplate();
 	void SpawnBullet() const;

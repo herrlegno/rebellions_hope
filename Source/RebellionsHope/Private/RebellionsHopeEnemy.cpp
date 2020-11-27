@@ -37,7 +37,7 @@ void ARebellionsHopeEnemy::CreateHierarchy() {
 	RootComponent = Root;
 	Mesh->AttachToComponent(Root,
 	                        FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
-	HitBox->AttachToComponent(Mesh,
+	HitBox->AttachToComponent(Root,
 	                          FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
 }
 

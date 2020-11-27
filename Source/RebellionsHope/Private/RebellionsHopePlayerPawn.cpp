@@ -52,6 +52,7 @@ void ARebellionsHopePlayerPawn::SetGizmos() const {
 
 void ARebellionsHopePlayerPawn::SetComponents() {
 	AddOwnedComponent(FireComponent);
+	FireComponent->FireRate = FireRate;
 }
 
 void ARebellionsHopePlayerPawn::OnMoveRight(const float Value) {

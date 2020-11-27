@@ -12,29 +12,31 @@ class REBELLIONSHOPE_API ARebellionsHopePlayerPawn : public ADefaultPawn {
 	GENERATED_BODY()
 
 public:
-
 	// Sets default values for this pawn's properties
 	ARebellionsHopePlayerPawn();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
-	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
+protected:
 
-	UPROPERTY(EditAnywhere, Category = "Player", meta = (ClampMin = "0"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0"))
 	float Speed = 100.f;
-	UPROPERTY(EditAnywhere, Category="Player", meta = (ClampMin="0"))
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0"))
 	float DashCooldown = 5.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin= "0"))
+	float FireRate = 100.f;
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
 	bool Right = true;
 	float LastDash = 0.f;
 
