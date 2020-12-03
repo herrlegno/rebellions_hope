@@ -86,7 +86,6 @@ void ASquadSpawner::SpawnSquad() {
 void ASquadSpawner::RandomFire() {
 	if (FMath::RandRange(0.f, 1.f) <= FirePercentage / 100) {
 		const int RandomIndex = FMath::RandRange(0, SquadMembers.Num() - 1);
-		UE_LOG(LogTemp, Warning, TEXT("%i"), RandomIndex);
 		SquadMembers[RandomIndex]->Fire();
 	}
 }

@@ -21,6 +21,7 @@ ARebellionsHopePlayerPawn::ARebellionsHopePlayerPawn() {
 // Called when the game starts or when spawned
 void ARebellionsHopePlayerPawn::BeginPlay() {
 	Super::BeginPlay();
+	DefaultRotation = GetMeshComponent()->GetRelativeRotation();
 }
 
 // Called every frame
@@ -58,12 +59,19 @@ void ARebellionsHopePlayerPawn::SetComponents() {
 }
 
 void ARebellionsHopePlayerPawn::OnMoveRight(const float Value) {
+	const auto CurrentRotation = GetMeshComponent()->GetRelativeRotation();
+	const float DeltaTime = GetWorld()->GetDeltaSeconds();
+	const float AnimationDuration = 5 * DeltaTime;
 	if (Value != 0.f) {
 		Right = Value >= 0.f;
-		const float DeltaTime = GetWorld()->GetDeltaSeconds();
 		const FVector RightVector = GetActorRightVector();
 		AddMovementInput(RightVector, Speed * Value * DeltaTime);
+		GetMeshComponent()->SetRelativeRotation(FMath::Lerp(CurrentRotation,
+		                                                    DefaultRotation + RotationTarget * (Right ? 1 : -1),
+		                                                    AnimationDuration));
+		return;
 	}
+	GetMeshComponent()->SetRelativeRotation(FMath::Lerp(CurrentRotation, DefaultRotation, AnimationDuration));
 }
 
 void ARebellionsHopePlayerPawn::OnFire() {

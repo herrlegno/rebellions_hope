@@ -49,7 +49,12 @@ private:
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
-	void OnMoveRight(float Value);
+	virtual void OnMoveRight(float Value) override;
 	void OnFire();
 	void OnDash();
+
+	UPROPERTY(EditAnywhere)
+	FRotator RotationTarget = FRotator(45.f, 0.f, 0.f);
+
+	FRotator DefaultRotation;
 };
