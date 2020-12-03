@@ -30,16 +30,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void NotifyCollision();
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-	static constexpr const TCHAR* DebugStaticMeshPath = TEXT("StaticMesh'/Engine/VREditor/FloatingText/JointSphere.JointSphere'");
+	static constexpr const TCHAR* DebugStaticMeshPath = TEXT(
+		"StaticMesh'/Engine/VREditor/FloatingText/JointSphere.JointSphere'");
 
 	UPROPERTY(EditAnywhere)
-	float Separation  = 200.f;
+	float Separation = 200.f;
 
 	UPROPERTY()
 	class ARebellionsHopeEnemy* EnemyTemplate;
@@ -52,7 +53,7 @@ private:
 
 	UPROPERTY()
 	class UStaticMeshComponent* DebugMesh = nullptr;
-	
+
 	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
 
@@ -60,4 +61,7 @@ private:
 	void SetDebugMesh() const;
 	void SetupEnemyTemplate();
 	void SpawnSquad();
+	void RandomFire();
+
+	float FirePercentage = 1.f;
 };

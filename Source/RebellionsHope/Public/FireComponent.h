@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Bullet.h"
 #include "FireComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -25,6 +26,9 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	void Fire();
+
+	UPROPERTY(VisibleAnywhere)
+	EBulletType BulletType;
 
 protected:
 	// Called when the game starts

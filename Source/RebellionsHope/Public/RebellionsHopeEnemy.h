@@ -24,6 +24,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Fire();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -49,8 +51,13 @@ private:
 	UFUNCTION()
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
+	void Activate();
+	void Deactivate();
+
 	void CreateHierarchy();
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
+
+	bool Active;
 };

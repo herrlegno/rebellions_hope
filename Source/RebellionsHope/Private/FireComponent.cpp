@@ -47,7 +47,8 @@ void UFireComponent::SpawnBullet() const {
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParameters.Template = BulletTemplate;
-		BulletTemplate->SetActorEnableCollision(false);
+		BulletTemplate->SetActorEnableCollision(true);
+		BulletTemplate->BulletType = BulletType;
 		GetWorld()->SpawnActor<ABullet>(SpawnLocation, SpawnRotation, SpawnParameters);
 	}
 }

@@ -6,6 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "Bullet.generated.h"
 
+UENUM(BlueprintType)
+enum class EBulletType: uint8 {
+	EnemyBullet UMETA(DisplayName = "Enemy"),
+	PlayerBullet UMETA(DisplayName = "Player"),
+};
+
 UCLASS()
 class REBELLIONSHOPE_API ABullet : public AActor {
 	GENERATED_BODY()
@@ -16,6 +22,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Properties", meta=(ClampMin = "0"))
 	float Velocity = 1000.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	EBulletType BulletType;
 
 	// Sets default values for this actor's properties
 	ABullet();

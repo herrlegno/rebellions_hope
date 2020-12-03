@@ -26,11 +26,28 @@ ARebellionsHopeEnemy::ARebellionsHopeEnemy() {
 // Called when the game starts or when spawned
 void ARebellionsHopeEnemy::BeginPlay() {
 	Super::BeginPlay();
+	Active = true;
 }
 
 // Called every frame
 void ARebellionsHopeEnemy::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
+}
+
+void ARebellionsHopeEnemy::Fire() {
+	if (!FireComponent) {
+		UE_LOG(LogTemp, Error, TEXT("%s: FireComponent not found!"), *GetFName().ToString());
+		return;
+	}
+	if (Active)
+		FireComponent->Fire();
+}
+
+void ARebellionsHopeEnemy::Deactivate() {
+	SetActorTickEnabled(false);
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	Active = false;
 }
 
 void ARebellionsHopeEnemy::CreateHierarchy() {
@@ -57,10 +74,26 @@ void ARebellionsHopeEnemy::SetGizmos() const {
 void ARebellionsHopeEnemy::SetComponents() {
 	AddOwnedComponent(FireComponent);
 	AddOwnedComponent(MovementComponent);
+	FireComponent->BulletType = EBulletType::EnemyBullet;
 }
 
 void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 	if (OtherActor->ActorHasTag(FName("SideLimit"))) {
 		Spawner->NotifyCollision();
+		return;
 	}
+	if (OtherActor->IsA(ABullet::StaticClass())) {
+		ABullet* Bullet = Cast<ABullet>(OtherActor);
+		if (Bullet->BulletType != EBulletType::PlayerBullet)
+			return;
+		Bullet->Destroy();
+		Deactivate();
+	}
+}
+
+void ARebellionsHopeEnemy::Activate() {
+	SetActorTickEnabled(true);
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+	Active = true;
 }

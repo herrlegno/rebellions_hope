@@ -18,7 +18,7 @@ ASquadSpawner::ASquadSpawner() {
 }
 
 void ASquadSpawner::NotifyCollision() {
-	for(auto Invader: SquadMembers) {
+	for (auto Invader : SquadMembers) {
 		Invader->MovementComponent->ChangeMovement(EInvaderMovementType::Forward);
 	}
 }
@@ -33,6 +33,7 @@ void ASquadSpawner::BeginPlay() {
 // Called every frame
 void ASquadSpawner::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
+	RandomFire();
 }
 
 void ASquadSpawner::SetGizmos() const {
@@ -66,7 +67,6 @@ void ASquadSpawner::SpawnSquad() {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Template = EnemyTemplate;
-	
 	const int HalfRow = FMath::RoundToInt(RowSize / 2);
 	const int HalfColumn = FMath::RoundToInt(ColumnSize / 2);
 	const bool EvenRow = RowSize % 2 == 0;
@@ -80,5 +80,13 @@ void ASquadSpawner::SpawnSquad() {
 				SpawnTransform.GetLocation(), SpawnTransform.Rotator(), SpawnParameters);
 			SquadMembers.Emplace(SpawnedEnemy);
 		}
+	}
+}
+
+void ASquadSpawner::RandomFire() {
+	if (FMath::RandRange(0.f, 1.f) <= FirePercentage / 100) {
+		const int RandomIndex = FMath::RandRange(0, SquadMembers.Num() - 1);
+		UE_LOG(LogTemp, Warning, TEXT("%i"), RandomIndex);
+		SquadMembers[RandomIndex]->Fire();
 	}
 }
