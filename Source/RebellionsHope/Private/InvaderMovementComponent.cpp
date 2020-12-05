@@ -13,7 +13,7 @@ UInvaderMovementComponent::UInvaderMovementComponent() {
 }
 
 void UInvaderMovementComponent::ChangeMovement(EInvaderMovementType NewMovement) {
-	if(NewMovement == EInvaderMovementType::Forward) {
+	if (NewMovement == EInvaderMovementType::Forward) {
 		LastCollision = Movement;
 		ForwardMovementStartLocation = GetOwner()->GetActorLocation();
 	}
@@ -23,7 +23,8 @@ void UInvaderMovementComponent::ChangeMovement(EInvaderMovementType NewMovement)
 // Called when the game starts
 void UInvaderMovementComponent::BeginPlay() {
 	Super::BeginPlay();
-	// ...
+	MeshComponent = Cast<UStaticMeshComponent>(GetOwner()->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+	DefaultRotation = MeshComponent->GetRelativeRotation();
 }
 
 // Called every frame
@@ -43,9 +44,11 @@ void UInvaderMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 		break;
 	}
 	case EInvaderMovementType::Forward: {
-		if(FGenericPlatformMath::Abs(Owner->GetActorLocation().X - ForwardMovementStartLocation.X) >= StepDistance) {
-			if(LastCollision == EInvaderMovementType::Left) ChangeMovement(EInvaderMovementType::Right);
-			if(LastCollision == EInvaderMovementType::Right) ChangeMovement(EInvaderMovementType::Left);
+		if (FGenericPlatformMath::Abs(Owner->GetActorLocation().X - ForwardMovementStartLocation.X) >= StepDistance) {
+			if (LastCollision == EInvaderMovementType::Left)
+				ChangeMovement(EInvaderMovementType::Right);
+			if (LastCollision == EInvaderMovementType::Right)
+				ChangeMovement(EInvaderMovementType::Left);
 			break;
 		}
 		MoveForward(Velocity * DeltaTime);
@@ -55,15 +58,27 @@ void UInvaderMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 }
 
 void UInvaderMovementComponent::MoveRight(const float DeltaVelocity) const {
-	AActor* Owner =  GetOwner();
+	AActor* Owner = GetOwner();
 	const FVector CurrentLocation = Owner->GetActorLocation();
 	const FVector RightVector = Owner->GetActorRightVector();
 	Owner->SetActorLocation(CurrentLocation + (RightVector * DeltaVelocity));
+	const float RotationDirection = Movement == EInvaderMovementType::Right ? 1 : -1;
+	RotateTo(DefaultRotation + MovementRotation * RotationDirection);
 }
 
 void UInvaderMovementComponent::MoveForward(const float DeltaVelocity) const {
-	AActor* Owner =  GetOwner();
+	AActor* Owner = GetOwner();
 	const FVector CurrentLocation = Owner->GetActorLocation();
 	const FVector ForwardVector = Owner->GetActorForwardVector();
 	Owner->SetActorLocation(CurrentLocation + (ForwardVector * DeltaVelocity));
+	RotateTo(DefaultRotation);
+}
+
+void UInvaderMovementComponent::RotateTo(const FRotator& TargetRotation) const {
+	const FRotator CurrentRotation = MeshComponent->GetRelativeRotation();
+	const float DeltaTime = GetWorld()->GetDeltaSeconds();
+	const float InterpolationSpeed = 5 * DeltaTime;
+	MeshComponent->SetRelativeRotation(FMath::Lerp(CurrentRotation,
+	                                               TargetRotation,
+	                                               InterpolationSpeed));
 }

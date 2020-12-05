@@ -34,6 +34,10 @@ protected:
 private:
 	EInvaderMovementType LastCollision;
 	FVector ForwardMovementStartLocation;
+	FRotator DefaultRotation;
+
+	UPROPERTY()
+	UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnywhere)
 	float Velocity = 200.f;
@@ -44,6 +48,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	EInvaderMovementType Movement = EInvaderMovementType::Right;
 
-	void MoveRight(const float DeltaVelocity) const;
-	void MoveForward(const float DeltaVelocity) const;
+	UPROPERTY(EditAnywhere)
+	FRotator MovementRotation = FRotator(45.f, 0.f, 0.f);
+
+	void MoveRight(float DeltaVelocity) const;
+	void MoveForward(float DeltaVelocity) const;
+	void RotateTo(const FRotator& TargetRotation) const;
 };
