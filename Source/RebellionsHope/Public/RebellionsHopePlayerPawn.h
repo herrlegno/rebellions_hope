@@ -58,4 +58,5 @@ private:
 	void OnDash();
 	void RotateTo(const FRotator& TargetRotation) const;
 
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

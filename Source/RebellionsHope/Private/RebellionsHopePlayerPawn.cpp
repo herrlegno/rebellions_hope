@@ -96,3 +96,13 @@ void ARebellionsHopePlayerPawn::RotateTo(const FRotator& TargetRotation) const {
 	                                                    TargetRotation,
 	                                                    InterpolationSpeed));
 }
+
+void ARebellionsHopePlayerPawn::NotifyActorBeginOverlap(AActor* OtherActor) {
+	if (OtherActor->IsA(ABullet::StaticClass())) {
+		ABullet* bullet = Cast<ABullet>(OtherActor);
+		if (bullet->BulletType == EBulletType::EnemyBullet) {
+			UE_LOG(LogTemp, Warning, TEXT("Player has been Hit!"));
+			bullet->Destroy();
+		}
+	}
+}
