@@ -59,19 +59,15 @@ void ARebellionsHopePlayerPawn::SetComponents() {
 }
 
 void ARebellionsHopePlayerPawn::OnMoveRight(const float Value) {
-	const auto CurrentRotation = GetMeshComponent()->GetRelativeRotation();
 	const float DeltaTime = GetWorld()->GetDeltaSeconds();
-	const float AnimationDuration = 5 * DeltaTime;
 	if (Value != 0.f) {
 		Right = Value >= 0.f;
 		const FVector RightVector = GetActorRightVector();
 		AddMovementInput(RightVector, Speed * Value * DeltaTime);
-		GetMeshComponent()->SetRelativeRotation(FMath::Lerp(CurrentRotation,
-		                                                    DefaultRotation + RotationTarget * (Right ? 1 : -1),
-		                                                    AnimationDuration));
+		RotateTo(DefaultRotation + MovementRotation * (Right ? 1 : -1));
 		return;
 	}
-	GetMeshComponent()->SetRelativeRotation(FMath::Lerp(CurrentRotation, DefaultRotation, AnimationDuration));
+	RotateTo(DefaultRotation);
 }
 
 void ARebellionsHopePlayerPawn::OnFire() {
@@ -90,4 +86,13 @@ void ARebellionsHopePlayerPawn::OnDash() {
 		return;
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Dash en cooldown: %f"), DashCooldown - (ActualTime - LastDash));
+}
+
+void ARebellionsHopePlayerPawn::RotateTo(const FRotator& TargetRotation) const {
+	const FRotator CurrentRotation = GetMeshComponent()->GetRelativeRotation();
+	const float DeltaTime = GetWorld()->GetDeltaSeconds();
+	const float InterpolationSpeed = 5 * DeltaTime;
+	GetMeshComponent()->SetRelativeRotation(FMath::Lerp(CurrentRotation,
+	                                                    TargetRotation,
+	                                                    InterpolationSpeed));
 }

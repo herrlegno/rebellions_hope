@@ -39,6 +39,7 @@ private:
 	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
 	bool Right = true;
 	float LastDash = 0.f;
+	FRotator DefaultRotation;
 
 	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
@@ -46,15 +47,15 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UFireComponent* FireComponent = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	FRotator MovementRotation = FRotator(45.f, 0.f, 0.f);
+
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
 	virtual void OnMoveRight(float Value) override;
 	void OnFire();
 	void OnDash();
+	void RotateTo(const FRotator& TargetRotation) const;
 
-	UPROPERTY(EditAnywhere)
-	FRotator RotationTarget = FRotator(45.f, 0.f, 0.f);
-
-	FRotator DefaultRotation;
 };
