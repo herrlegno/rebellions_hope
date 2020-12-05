@@ -38,3 +38,9 @@ void ABullet::SetMesh() const {
 	Mesh->SetRelativeScale3D(FVector(.2f, .2f, .2f));
 	Mesh->SetRelativeRotation(FRotator(-90.f, 0.f, 0.f));
 }
+
+void ABullet::NotifyActorBeginOverlap(AActor* OtherActor) {
+	if (OtherActor->ActorHasTag("BulletLimit")) {
+		Destroy();
+	}
+}

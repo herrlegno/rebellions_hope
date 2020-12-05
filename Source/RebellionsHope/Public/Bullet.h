@@ -45,4 +45,6 @@ private:
 	void CreateHierarchy();
 	void SetMesh() const;
 
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
 };
