@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "SquadSpawner.h"
 #include "GameFramework/Actor.h"
+#include "Bullet.h"
 #include "RebellionsHopeEnemy.generated.h"
 
 UCLASS()
@@ -12,7 +13,7 @@ class REBELLIONSHOPE_API ARebellionsHopeEnemy : public AActor {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, Category = "Invader")
 	class UInvaderMovementComponent* MovementComponent = nullptr;
 
 	UPROPERTY()
@@ -32,6 +33,7 @@ protected:
 
 private:
 	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'");
+	bool Active;
 
 	UPROPERTY()
 	class USceneComponent* Root = nullptr;
@@ -45,7 +47,7 @@ private:
 	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Invader")
 	class UFireComponent* FireComponent = nullptr;
 
 	UFUNCTION()
@@ -58,6 +60,4 @@ private:
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
-
-	bool Active;
 };

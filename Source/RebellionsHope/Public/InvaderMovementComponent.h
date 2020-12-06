@@ -18,6 +18,12 @@ class REBELLIONSHOPE_API UInvaderMovementComponent : public UActorComponent {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Velocity = 200.f;
+
+	UPROPERTY(EditAnywhere)
+	float StepDistance = 100.f;
+
 	// Sets default values for this component's properties
 	UInvaderMovementComponent();
 
@@ -25,6 +31,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
 	void ChangeMovement(EInvaderMovementType NewMovement);
 
 protected:
@@ -38,12 +45,6 @@ private:
 
 	UPROPERTY()
 	UStaticMeshComponent* MeshComponent;
-
-	UPROPERTY(EditAnywhere)
-	float Velocity = 200.f;
-
-	UPROPERTY(EditAnywhere)
-	float StepDistance = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	EInvaderMovementType Movement = EInvaderMovementType::Right;

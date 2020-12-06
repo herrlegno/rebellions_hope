@@ -23,7 +23,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Properties", meta=(ClampMin = "0"))
 	float Velocity = 1000.f;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	EBulletType BulletType;
 
 	// Sets default values for this actor's properties

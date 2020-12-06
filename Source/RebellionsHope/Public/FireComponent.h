@@ -18,6 +18,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0"))
 	float FireRate = 100.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EBulletType BulletType;
+
 	// Sets default values for this component's properties
 	UFireComponent();
 
@@ -26,9 +29,6 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	void Fire();
-
-	UPROPERTY(VisibleAnywhere)
-	EBulletType BulletType;
 
 protected:
 	// Called when the game starts

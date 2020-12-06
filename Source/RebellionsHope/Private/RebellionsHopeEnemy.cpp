@@ -74,7 +74,6 @@ void ARebellionsHopeEnemy::SetGizmos() const {
 void ARebellionsHopeEnemy::SetComponents() {
 	AddOwnedComponent(FireComponent);
 	AddOwnedComponent(MovementComponent);
-	FireComponent->BulletType = EBulletType::EnemyBullet;
 }
 
 void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {

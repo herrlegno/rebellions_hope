@@ -52,14 +52,13 @@ void ASquadSpawner::SetDebugMesh() const {
 }
 
 void ASquadSpawner::SetupEnemyTemplate() {
-	if (EnemyClass->IsChildOf<ARebellionsHopeEnemy>()) {
+	if (EnemyClass->IsChildOf<ARebellionsHopeEnemy>())
 		EnemyTemplate = NewObject<ARebellionsHopeEnemy>(this, EnemyClass->GetFName(), RF_NoFlags,
 		                                                EnemyClass.GetDefaultObject());
-		EnemyTemplate->Spawner = this;
-		return;
-	}
-	EnemyTemplate = NewObject<ARebellionsHopeEnemy>();
+	else
+		EnemyTemplate = NewObject<ARebellionsHopeEnemy>();
 	EnemyTemplate->Spawner = this;
+	EnemyTemplate->MovementComponent->Velocity = InvaderVelocity;
 }
 
 void ASquadSpawner::SpawnSquad() {

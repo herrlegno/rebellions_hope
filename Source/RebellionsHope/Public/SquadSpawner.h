@@ -11,17 +11,6 @@ class REBELLIONSHOPE_API ASquadSpawner : public AActor {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere)
-	int32 RowSize = 5;
-
-	UPROPERTY(EditAnywhere)
-	int32 ColumnSize = 5;
-
-	float HorizontalVelocity = 1000.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
-	TSubclassOf<class ARebellionsHopeEnemy> EnemyClass;
-
 	// Sets default values for this actor's properties
 	ASquadSpawner();
 
@@ -39,13 +28,28 @@ private:
 	static constexpr const TCHAR* DebugStaticMeshPath = TEXT(
 		"StaticMesh'/Engine/VREditor/FloatingText/JointSphere.JointSphere'");
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	int32 RowSize = 5;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	int32 ColumnSize = 5;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	float InvaderVelocity = 200.f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
 	float Separation = 200.f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner", meta =(ClampMin = "0", ClampMax = "100"))
+	float FirePercentage = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	TSubclassOf<class ARebellionsHopeEnemy> EnemyClass;
 
 	UPROPERTY()
 	class ARebellionsHopeEnemy* EnemyTemplate;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleInstanceOnly, Category = "Spawner")
 	TArray<ARebellionsHopeEnemy*> SquadMembers;
 
 	UPROPERTY()
@@ -63,5 +67,4 @@ private:
 	void SpawnSquad();
 	void RandomFire();
 
-	float FirePercentage = 1.f;
 };
