@@ -5,7 +5,9 @@
 #include "InvaderMovementComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "RebellionsHope/RebellionsHopeGameModeBase.h"
 
 // Sets default values
 ARebellionsHopeEnemy::ARebellionsHopeEnemy() {
@@ -85,6 +87,8 @@ void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 		ABullet* Bullet = Cast<ABullet>(OtherActor);
 		if (Bullet->BulletType != EBulletType::PlayerBullet)
 			return;
+		auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+		GameMode->InvaderDestroyed.Broadcast();
 		Bullet->Destroy();
 		Deactivate();
 	}

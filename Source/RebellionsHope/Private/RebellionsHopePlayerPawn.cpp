@@ -5,6 +5,8 @@
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
 #include "Bullet.h"
+#include "Kismet/GameplayStatics.h"
+#include "RebellionsHope/RebellionsHopeGameModeBase.h"
 
 // Sets default values
 ARebellionsHopePlayerPawn::ARebellionsHopePlayerPawn() {
@@ -18,10 +20,22 @@ ARebellionsHopePlayerPawn::ARebellionsHopePlayerPawn() {
 	SetComponents();
 }
 
+float ARebellionsHopePlayerPawn::GetHealth() const {
+	return Health;
+}
+
+int32 ARebellionsHopePlayerPawn::GetPoints() const {
+	return Points;
+}
+
 // Called when the game starts or when spawned
 void ARebellionsHopePlayerPawn::BeginPlay() {
 	Super::BeginPlay();
 	DefaultRotation = GetMeshComponent()->GetRelativeRotation();
+	Health = MaxHealth;
+	const auto World = GetWorld();
+	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
+	GameMode->InvaderDestroyed.AddUObject(this, &ARebellionsHopePlayerPawn::OnInvaderDestroyed);
 }
 
 // Called every frame
@@ -95,11 +109,22 @@ void ARebellionsHopePlayerPawn::RotateTo(const FRotator& TargetRotation) const {
 	                                                    InterpolationSpeed));
 }
 
+void ARebellionsHopePlayerPawn::OnInvaderDestroyed() {
+	const auto World = GetWorld();
+	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
+	Points += GameMode->PointsPerInvader;
+}
+
 void ARebellionsHopePlayerPawn::NotifyActorBeginOverlap(AActor* OtherActor) {
 	if (OtherActor->IsA(ABullet::StaticClass())) {
 		ABullet* bullet = Cast<ABullet>(OtherActor);
 		if (bullet->BulletType == EBulletType::EnemyBullet) {
-			UE_LOG(LogTemp, Warning, TEXT("Player has been Hit!"));
+			Health = FMath::Clamp<float>(Health - (MaxHealth / 3.f), 0, 100);
+			if (Health <= 0) {
+				const auto World = GetWorld();
+				auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
+				GameMode->EndGameDelegate.ExecuteIfBound();
+			}
 			bullet->Destroy();
 		}
 	}

@@ -13,6 +13,9 @@ class REBELLIONSHOPE_API ARebellionsHopePlayerPawn : public ADefaultPawn {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0", ClampMax = "100"))
+	int32 MaxHealth = 100;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0"))
 	float Speed = 100.f;
 
@@ -21,6 +24,12 @@ public:
 
 	// Sets default values for this pawn's properties
 	ARebellionsHopePlayerPawn();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealth() const;
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetPoints() const;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,6 +43,9 @@ protected:
 
 private:
 	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'");
+	int32 Points = 0;
+
+	float Health;
 	bool Right = true;
 	float LastDash = 0.f;
 	FRotator DefaultRotation;
@@ -41,11 +53,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Player")
 	FRotator MovementRotation = FRotator(45.f, 0.f, 0.f);
 
-	UPROPERTY()
-	class UArrowComponent* ForwardArrow = nullptr;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class UFireComponent* FireComponent = nullptr;
+
+	UPROPERTY()
+	class UArrowComponent* ForwardArrow = nullptr;
 
 	void SetMesh() const;
 	void SetGizmos() const;
@@ -54,6 +66,7 @@ private:
 	void OnFire();
 	void OnDash();
 	void RotateTo(const FRotator& TargetRotation) const;
+	void OnInvaderDestroyed();
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };
