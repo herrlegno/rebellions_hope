@@ -49,8 +49,8 @@ private:
 	UPROPERTY()
 	class ARebellionsHopeEnemy* EnemyTemplate;
 
-	UPROPERTY(VisibleInstanceOnly, Category = "Spawner")
-	TArray<ARebellionsHopeEnemy*> SquadMembers;
+	UPROPERTY(VisibleAnywhere, Category = "Spawner")
+	TArray<class ARebellionsHopeEnemy*> SquadMembers;
 
 	UPROPERTY()
 	class USceneComponent* Root = nullptr;
@@ -61,10 +61,12 @@ private:
 	UPROPERTY()
 	class UArrowComponent* ForwardArrow = nullptr;
 
+	int16 InvadersAlive;
+
 	void SetGizmos() const;
 	void SetDebugMesh() const;
 	void SetupEnemyTemplate();
 	void SpawnSquad();
 	void RandomFire();
-
+	void OnInvaderDestroyed(int Index);
 };

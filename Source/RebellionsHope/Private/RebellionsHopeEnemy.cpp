@@ -6,7 +6,6 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "RebellionsHope/RebellionsHopeGameModeBase.h"
 
 // Sets default values
@@ -28,7 +27,6 @@ ARebellionsHopeEnemy::ARebellionsHopeEnemy() {
 // Called when the game starts or when spawned
 void ARebellionsHopeEnemy::BeginPlay() {
 	Super::BeginPlay();
-	Active = true;
 }
 
 // Called every frame
@@ -41,15 +39,7 @@ void ARebellionsHopeEnemy::Fire() {
 		UE_LOG(LogTemp, Error, TEXT("%s: FireComponent not found!"), *GetFName().ToString());
 		return;
 	}
-	if (Active)
-		FireComponent->Fire();
-}
-
-void ARebellionsHopeEnemy::Deactivate() {
-	SetActorTickEnabled(false);
-	SetActorHiddenInGame(true);
-	SetActorEnableCollision(false);
-	Active = false;
+	FireComponent->Fire();
 }
 
 void ARebellionsHopeEnemy::CreateHierarchy() {
@@ -89,17 +79,10 @@ void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 	}
 	if (OtherActor->IsA(ABullet::StaticClass())) {
 		ABullet* Bullet = Cast<ABullet>(OtherActor);
-		if (Bullet->BulletType != EBulletType::PlayerBullet)
-			return;
-		GameMode->InvaderDestroyed.Broadcast();
-		Bullet->Destroy();
-		Deactivate();
+		if (Bullet->BulletType == EBulletType::PlayerBullet) {
+			Bullet->Destroy();
+			GameMode->InvaderDestroyed.Broadcast(Index);
+			Destroy();
+		}
 	}
-}
-
-void ARebellionsHopeEnemy::Activate() {
-	SetActorTickEnabled(true);
-	SetActorHiddenInGame(false);
-	SetActorEnableCollision(true);
-	Active = true;
 }

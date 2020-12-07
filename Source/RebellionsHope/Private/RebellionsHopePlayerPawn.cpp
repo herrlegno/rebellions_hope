@@ -36,6 +36,7 @@ void ARebellionsHopePlayerPawn::BeginPlay() {
 	const auto World = GetWorld();
 	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
 	GameMode->InvaderDestroyed.AddUObject(this, &ARebellionsHopePlayerPawn::OnInvaderDestroyed);
+	GameMode->SquadDissolved.BindUObject(this, &ARebellionsHopePlayerPawn::OnSquadDissolved);
 }
 
 // Called every frame
@@ -109,10 +110,16 @@ void ARebellionsHopePlayerPawn::RotateTo(const FRotator& TargetRotation) const {
 	                                                    InterpolationSpeed));
 }
 
-void ARebellionsHopePlayerPawn::OnInvaderDestroyed() {
+void ARebellionsHopePlayerPawn::OnInvaderDestroyed(int32 index) {
 	const auto World = GetWorld();
 	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
 	Points += GameMode->PointsPerInvader;
+}
+
+void ARebellionsHopePlayerPawn::OnSquadDissolved() {
+	const auto World = GetWorld();
+	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
+	Points += GameMode->PointsPerSquad;
 }
 
 void ARebellionsHopePlayerPawn::NotifyActorBeginOverlap(AActor* OtherActor) {

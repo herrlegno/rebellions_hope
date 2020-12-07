@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "SquadSpawner.h"
 #include "GameFramework/Actor.h"
-#include "Bullet.h"
 #include "RebellionsHopeEnemy.generated.h"
 
 UCLASS()
@@ -13,6 +12,8 @@ class REBELLIONSHOPE_API ARebellionsHopeEnemy : public AActor {
 	GENERATED_BODY()
 
 public:
+	int Index;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Invader")
 	class UInvaderMovementComponent* MovementComponent = nullptr;
 
@@ -26,14 +27,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Fire();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
 	static constexpr const TCHAR* DefaultStaticMeshPath = TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'");
-	bool Active;
 
 	UPROPERTY()
 	class USceneComponent* Root = nullptr;
@@ -52,9 +51,6 @@ private:
 
 	UFUNCTION()
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
-
-	void Activate();
-	void Deactivate();
 
 	void CreateHierarchy();
 	void SetMesh() const;

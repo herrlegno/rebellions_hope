@@ -4,6 +4,8 @@
 #include "RebellionsHopeEnemy.h"
 #include "InvaderMovementComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "RebellionsHope/RebellionsHopeGameModeBase.h"
 
 // Sets default values
 ASquadSpawner::ASquadSpawner() {
@@ -18,8 +20,9 @@ ASquadSpawner::ASquadSpawner() {
 }
 
 void ASquadSpawner::NotifyCollision() {
-	for (auto Invader : SquadMembers) {
-		Invader->MovementComponent->ChangeMovement(EInvaderMovementType::Forward);
+	for (auto& Invader : SquadMembers) {
+		if (Invader != nullptr)
+			Invader->MovementComponent->ChangeMovement(EInvaderMovementType::Forward);
 	}
 }
 
@@ -28,6 +31,8 @@ void ASquadSpawner::BeginPlay() {
 	Super::BeginPlay();
 	SetupEnemyTemplate();
 	SpawnSquad();
+	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameMode->InvaderDestroyed.AddUObject(this, &ASquadSpawner::OnInvaderDestroyed);
 }
 
 // Called every frame
@@ -66,6 +71,7 @@ void ASquadSpawner::SpawnSquad() {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Template = EnemyTemplate;
+	int Index = 0;
 	const int HalfRow = FMath::RoundToInt(RowSize / 2);
 	const int HalfColumn = FMath::RoundToInt(ColumnSize / 2);
 	const bool EvenRow = RowSize % 2 == 0;
@@ -77,14 +83,30 @@ void ASquadSpawner::SpawnSquad() {
 			const FTransform SpawnTransform = LocalTransform * OriginTransform;
 			ARebellionsHopeEnemy* SpawnedEnemy = GetWorld()->SpawnActor<ARebellionsHopeEnemy>(
 				SpawnTransform.GetLocation(), SpawnTransform.Rotator(), SpawnParameters);
+			SpawnedEnemy->Index = Index;
 			SquadMembers.Emplace(SpawnedEnemy);
+			Index++;
 		}
 	}
+	InvadersAlive = RowSize * ColumnSize;
 }
 
 void ASquadSpawner::RandomFire() {
 	if (FMath::RandRange(0.f, 1.f) <= FirePercentage / 100) {
 		const int RandomIndex = FMath::RandRange(0, SquadMembers.Num() - 1);
-		SquadMembers[RandomIndex]->Fire();
+		const auto Invader = SquadMembers[RandomIndex];
+		if (Invader != nullptr)
+			Invader->Fire();
+	}
+}
+
+void ASquadSpawner::OnInvaderDestroyed(int Index) {
+	InvadersAlive--;
+	SquadMembers[Index] = nullptr;
+	if (InvadersAlive <= 0) {
+		const auto World = GetWorld();
+		auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
+		GameMode->SquadDissolved.ExecuteIfBound();
+		SpawnSquad();
 	}
 }

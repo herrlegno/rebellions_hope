@@ -66,7 +66,8 @@ private:
 	void OnFire();
 	void OnDash();
 	void RotateTo(const FRotator& TargetRotation) const;
-	void OnInvaderDestroyed();
+	void OnInvaderDestroyed(int32 index);
+	void OnSquadDissolved();
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };
