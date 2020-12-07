@@ -79,6 +79,10 @@ void ARebellionsHopeEnemy::SetComponents() {
 }
 
 void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
+	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (OtherActor->ActorHasTag(FName("EndGame"))) {
+		GameMode->EndGameDelegate.ExecuteIfBound();
+	}
 	if (OtherActor->ActorHasTag(FName("SideLimit"))) {
 		Spawner->NotifyCollision();
 		return;
@@ -87,7 +91,6 @@ void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 		ABullet* Bullet = Cast<ABullet>(OtherActor);
 		if (Bullet->BulletType != EBulletType::PlayerBullet)
 			return;
-		auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 		GameMode->InvaderDestroyed.Broadcast();
 		Bullet->Destroy();
 		Deactivate();
