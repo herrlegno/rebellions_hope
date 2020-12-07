@@ -13,5 +13,5 @@ ARebellionsHopeGameModeBase::ARebellionsHopeGameModeBase() {
 }
 
 void ARebellionsHopeGameModeBase::OnEndGame() const {
-	UGameplayStatics::OpenLevel(this, FName("Level_1"));
+	UGameplayStatics::OpenLevel(this, FName("Menu"));
 }
