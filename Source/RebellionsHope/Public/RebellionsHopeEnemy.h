@@ -30,6 +30,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Invader")
 	class USoundCue* ExplosionCue;
+
+	UPROPERTY(EditAnywhere, Category = "Invader")
+	class UParticleSystem* ExplosionEmitter;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
