@@ -2,13 +2,15 @@
 
 #include "FireComponent.h"
 #include "Bullet.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values for this component's properties
 UFireComponent::UFireComponent() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	// ...
 }
 
 void UFireComponent::Fire() {
@@ -40,9 +42,9 @@ void UFireComponent::SetupBulletTemplate() {
 }
 
 void UFireComponent::SpawnBullet() const {
+	const AActor* Owner = GetOwner();
+	const FVector SpawnLocation = Owner->GetActorLocation();
 	if (BulletTemplate) {
-		const AActor* Owner = GetOwner();
-		const FVector SpawnLocation = Owner->GetActorLocation();
 		const FRotator SpawnRotation = Owner->GetActorRotation();
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -51,6 +53,7 @@ void UFireComponent::SpawnBullet() const {
 		BulletTemplate->BulletType = BulletType;
 		GetWorld()->SpawnActor<ABullet>(SpawnLocation, SpawnRotation, SpawnParameters);
 	}
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireCue, SpawnLocation);
 }
 
 bool UFireComponent::CanShoot() const {

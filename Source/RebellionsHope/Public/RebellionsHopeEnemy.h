@@ -27,6 +27,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Fire();
+
+	UPROPERTY(EditAnywhere, Category = "Invader")
+	class USoundCue* ExplosionCue;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -56,4 +59,6 @@ private:
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
+	void Deactivate();
+	void OnFinishedExplosion();
 };

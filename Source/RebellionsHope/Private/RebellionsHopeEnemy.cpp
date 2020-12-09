@@ -4,9 +4,11 @@
 #include "FireComponent.h"
 #include "InvaderMovementComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "RebellionsHope/RebellionsHopeGameModeBase.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 ARebellionsHopeEnemy::ARebellionsHopeEnemy() {
@@ -68,6 +70,17 @@ void ARebellionsHopeEnemy::SetComponents() {
 	AddOwnedComponent(MovementComponent);
 }
 
+void ARebellionsHopeEnemy::Deactivate() {
+	SetActorTickEnabled(false);
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+}
+
+void ARebellionsHopeEnemy::OnFinishedExplosion() {
+	UE_LOG(LogTemp, Warning, TEXT("Finished"));
+	Destroy();
+}
+
 void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 	auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (OtherActor->ActorHasTag(FName("EndGame"))) {
@@ -80,6 +93,7 @@ void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 	if (OtherActor->IsA(ABullet::StaticClass())) {
 		ABullet* Bullet = Cast<ABullet>(OtherActor);
 		if (Bullet->BulletType == EBulletType::PlayerBullet) {
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionCue, GetActorLocation());
 			Bullet->Destroy();
 			GameMode->InvaderDestroyed.Broadcast(Index);
 			Destroy();

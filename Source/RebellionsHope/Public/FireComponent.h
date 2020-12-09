@@ -30,6 +30,9 @@ public:
 
 	void Fire();
 
+	UPROPERTY(EditAnywhere)
+	class USoundCue* FireCue;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
