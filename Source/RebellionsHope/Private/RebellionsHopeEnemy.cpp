@@ -95,7 +95,7 @@ void ARebellionsHopeEnemy::NotifyActorBeginOverlap(AActor* OtherActor) {
 		if (Bullet->BulletType == EBulletType::PlayerBullet) {
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionCue, GetActorLocation());
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEmitter, GetActorLocation(),
-			                                         FQuat::Identity.Rotator(), FVector(.5, .5, .5));
+			                                         FQuat::Identity.Rotator(), FVector(.5f));
 			Bullet->Destroy();
 			GameMode->InvaderDestroyed.Broadcast(Index);
 			Destroy();

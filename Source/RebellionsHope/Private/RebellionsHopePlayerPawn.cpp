@@ -132,6 +132,8 @@ void ARebellionsHopePlayerPawn::NotifyActorBeginOverlap(AActor* OtherActor) {
 				auto GameMode = Cast<ARebellionsHopeGameModeBase>(UGameplayStatics::GetGameMode(World));
 				GameMode->EndGameDelegate.ExecuteIfBound();
 			}
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEmitter, GetActorLocation(),
+			                                         FQuat::Identity.Rotator(), FVector(.5f));
 			bullet->Destroy();
 		}
 	}

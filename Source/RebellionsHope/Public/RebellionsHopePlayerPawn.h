@@ -37,6 +37,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, Category = "Player")
+	class UParticleSystem* HitEmitter;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
