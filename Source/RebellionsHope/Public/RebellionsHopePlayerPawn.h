@@ -65,7 +65,7 @@ private:
 	void SetMesh() const;
 	void SetGizmos() const;
 	void SetComponents();
-	virtual void OnMoveRight(float Value) override;
+	virtual void OnMoveRight(float Value);
 	void OnFire();
 	void OnDash();
 	void RotateTo(const FRotator& TargetRotation) const;
