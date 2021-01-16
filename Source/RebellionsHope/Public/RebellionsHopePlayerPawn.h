@@ -22,6 +22,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0"))
 	float DashCooldown = 5.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0"))
+	float DashSpeed = 400.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player", meta = (ClampMin = "0"))
+	float DashDistance = 400.f;
+
 	// Sets default values for this pawn's properties
 	ARebellionsHopePlayerPawn();
 
@@ -38,7 +44,16 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = "Player")
-	class UParticleSystem* HitEmitter;
+	class UParticleSystem* HitParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Player")
+	class UParticleSystem* DashParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Player")
+	class UParticleSystem* ExplosionParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Player")
+	class USoundCue* ExplosionCue;
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,6 +65,8 @@ private:
 
 	float Health;
 	bool Right = true;
+	bool Dashing = false;
+	FVector DashStart = FVector(0,0,0);
 	float LastDash = 0.f;
 	FRotator DefaultRotation;
 
@@ -71,6 +88,10 @@ private:
 	void RotateTo(const FRotator& TargetRotation) const;
 	void OnInvaderDestroyed(int32 index);
 	void OnSquadDissolved();
+	void Dash(const float DeltaTime);
+	void NotifyGameOver() const;
+	class UFloatingPawnMovement* GetFloatingPawnMovement() const;
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 };

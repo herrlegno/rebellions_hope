@@ -27,4 +27,6 @@ public:
 
 private:
 	void OnEndGame() const;
+
+	void OpenMenu() const;
 };

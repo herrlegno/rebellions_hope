@@ -13,5 +13,10 @@ ARebellionsHopeGameModeBase::ARebellionsHopeGameModeBase() {
 }
 
 void ARebellionsHopeGameModeBase::OnEndGame() const {
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ARebellionsHopeGameModeBase::OpenMenu, 2.f, false);
+}
+
+void ARebellionsHopeGameModeBase::OpenMenu() const {
 	UGameplayStatics::OpenLevel(this, FName("Menu"));
 }
