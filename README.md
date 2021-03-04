@@ -1,3 +1,5 @@
-# Rebellion's Hope (In Development)
+# Rebellion's Hope
 
 Bring hope to the rebellion by fighting and weakening the empire army.
+
+![demo](./resources/demo.gif)
